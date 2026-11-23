@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>為什麼在醫院要一直洗手？給第一次陪病的家屬</title>
+<style>
+  :root{
+    --bg:#f6f3ee; --ink:#1f2a30; --muted:#5b676e; --line:#d9d2c7;
+    --accent:#0f6b6b; --accent-soft:#dcefed; --warn:#9a5b00; --warn-soft:#fbeed6;
+    --card:#ffffff; --ok:#1d7a3a; --bad:#b3261e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",sans-serif;
+    font-size:clamp(18px,2.4vw,24px);line-height:1.6;overflow:hidden}
+  .deck{position:relative;height:100%;width:100%}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;
+    padding:clamp(24px,5vw,64px) clamp(20px,7vw,110px) 0;overflow-y:auto}
+  .slide::after{content:"";flex:0 0 84px}
+  .slide.active{display:flex;animation:fade .35s ease}
+  .slide>*{flex-shrink:0}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .kicker{font-size:.8em;letter-spacing:.12em;color:var(--accent);font-weight:700;margin-bottom:.4em}
+  h1{font-size:clamp(34px,5.4vw,60px);line-height:1.25;margin-bottom:.5em}
+  h2{font-size:clamp(28px,4vw,44px);line-height:1.3;margin-bottom:.7em}
+  p{margin-bottom:.7em}
+  .lead{font-size:1.15em;color:var(--muted);max-width:30em}
+  .big{font-size:1.3em;font-weight:700}
+  .en{color:var(--muted);font-size:.78em;font-weight:400}
+  .cards{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:.4em 0 1em}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .card b{display:block;font-size:1.05em;margin-bottom:.2em}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:1.8em;height:1.8em;
+    border-radius:50%;background:var(--accent);color:#fff;font-weight:700;margin-right:.5em;flex:none}
+  .row{display:flex;align-items:flex-start;gap:.2em;padding:12px 0;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .list{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 22px;margin-bottom:1em}
+  .note{background:var(--warn-soft);border-left:6px solid var(--warn);border-radius:8px;
+    padding:12px 16px;font-size:.88em;margin-top:.4em}
+  .note b{color:var(--warn)}
+  .obs{background:var(--accent-soft);border-left:6px solid var(--accent);border-radius:8px;
+    padding:12px 16px;font-size:.88em;margin-top:.4em}
+  .chips{display:flex;flex-wrap:wrap;gap:12px;margin:.3em 0 1em}
+  .chip{background:var(--accent);color:#fff;font-size:1.5em;font-weight:700;border-radius:12px;
+    min-width:2.2em;text-align:center;padding:.15em .4em}
+  .chip.alt{background:#2f4a57}
+  .myth{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .myth .card.x{border-color:#e6b8b4}
+  .myth .card.o{border-color:#a9d3b5}
+  .tag{display:inline-block;font-size:.75em;font-weight:700;padding:2px 10px;border-radius:99px;margin-bottom:.4em}
+  .tag.x{background:#f6dcda;color:var(--bad)} .tag.o{background:#d7efdf;color:var(--ok)}
+  .src{margin-top:auto;padding-top:18px;align-self:flex-end;font-size:.62em;color:var(--muted);text-align:right}
+  .quiz .q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:14px}
+  .quiz .q p{font-weight:700;margin-bottom:.5em}
+  .opts{display:flex;flex-wrap:wrap;gap:10px}
+  .opts button{font:inherit;font-size:.9em;padding:8px 16px;border-radius:10px;border:2px solid var(--line);
+    background:#fff;cursor:pointer}
+  .opts button:hover{border-color:var(--accent)}
+  .opts button.right{background:#d7efdf;border-color:var(--ok)}
+  .opts button.wrong{background:#f6dcda;border-color:var(--bad)}
+  .fb{font-size:.85em;margin-top:.5em;min-height:1.3em}
+  .refs{font-size:.72em;color:var(--muted)} .refs li{margin:.25em 0 .25em 1.2em}
+  .refs a{color:var(--accent)}
+  nav{position:fixed;left:0;right:0;bottom:0;height:64px;display:flex;align-items:center;
+    justify-content:space-between;padding:0 clamp(16px,4vw,48px);background:rgba(246,243,238,.95);
+    border-top:1px solid var(--line)}
+  nav button{font:inherit;font-size:.85em;padding:8px 18px;border-radius:10px;border:2px solid var(--accent);
+    background:#fff;color:var(--accent);font-weight:700;cursor:pointer}
+  nav button:disabled{opacity:.35;cursor:default}
+  .progress{flex:1;margin:0 18px;height:6px;background:var(--line);border-radius:6px;overflow:hidden}
+  .bar{height:100%;background:var(--accent);width:0;transition:width .3s}
+  .count{font-size:.75em;color:var(--muted);min-width:4.5em;text-align:center}
+  @media (max-width:640px){ .myth{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 1 封面 -->
+  <section class="slide">
+    <div class="kicker">陪病家屬衛教 ・ 手部衛生</div>
+    <h1>為什麼在醫院<br>要一直洗手？</h1>
+    <p class="lead">給第一次到醫院照顧家人的你：<br>10 分鐘了解「為什麼洗、何時洗、怎麼洗」。</p>
+    <p class="lead" style="font-size:.85em;margin-top:1.2em">按鍵盤 ← → 或下方按鈕換頁，手機可左右滑動</p>
+  </section>
+
+  <!-- 2 情境 -->
+  <section class="slide">
+    <div class="kicker">先想一想</div>
+    <h2>你剛走進病房……</h2>
+    <div class="list">
+      <div class="row"><span class="num">1</span>幫家人拉好被子、調整枕頭</div>
+      <div class="row"><span class="num">2</span>扶他坐起來喝水</div>
+      <div class="row"><span class="num">3</span>擦掉他嘴角的口水</div>
+      <div class="row"><span class="num">4</span>收拾床旁桌上的餐盒</div>
+    </div>
+    <p class="big">這中間，你應該洗幾次手？</p>
+    <p>看完這份簡報，你就會有答案。</p>
+  </section>
+
+  <!-- 3 為什麼 -->
+  <section class="slide">
+    <div class="kicker">為什麼要洗手</div>
+    <h2>最簡單、也最有效的保護</h2>
+    <div class="cards">
+      <div class="card"><b>最划算的預防方法</b>手部衛生是預防醫療照護相關感染與抗生素抗藥性，最簡單、有效且最合乎成本效益的方法。</div>
+      <div class="card"><b>保護病人，也保護你</b>正確清潔雙手能降低傳染病的發生與傳播，保護自己和他人。</div>
+      <div class="card"><b>病人安全的核心</b>學術研究指出，手部衛生是病人安全的核心要素。<span class="en">（patient safety）</span></div>
+    </div>
+    <p>世界衛生組織已將抗生素抗藥性列為<strong>全球十大健康威脅之一</strong>，而清潔雙手可以減緩抗藥性微生物的傳播。</p>
+    <div class="src">Wiki：手部衛生｜來源 S1、S2、S5</div>
+  </section>
+
+  <!-- 4 看不見的細菌 -->
+  <section class="slide">
+    <div class="kicker">容易忽略的地方</div>
+    <h2>不只病人身上，<br>病人「旁邊」也算</h2>
+    <p>世界衛生組織的洗手海報上，病床、枕頭、床旁桌這些<strong>病人週遭環境</strong>都畫上了細菌圖示。</p>
+    <div class="chips"><span class="chip alt">病床</span><span class="chip alt">枕頭</span><span class="chip alt">床旁桌</span></div>
+    <p class="big">摸過這些東西之後，也是洗手的時機。</p>
+    <p class="en">patient surroundings ＝ 病人週遭環境</p>
+    <div class="src">Wiki：照顧者洗手5時機｜來源 S3（海報圖像）</div>
+  </section>
+
+  <!-- 5 照顧者 5 時機 -->
+  <section class="slide">
+    <div class="kicker">何時洗 ①　在病床邊照顧時</div>
+    <h2>照顧者洗手 5 時機</h2>
+    <div class="list">
+      <div class="row"><span class="num">1</span><div>接觸病人<strong>前</strong> <span class="en">before touching a patient</span></div></div>
+      <div class="row"><span class="num">2</span><div>執行清潔／無菌操作技術<strong>前</strong> <span class="en">before clean/aseptic procedure</span></div></div>
+      <div class="row"><span class="num">3</span><div>暴觸病人體液風險<strong>後</strong> <span class="en">after body fluid exposure risk</span></div></div>
+      <div class="row"><span class="num">4</span><div>接觸病人<strong>後</strong> <span class="en">after touching a patient</span></div></div>
+      <div class="row"><span class="num">5</span><div>接觸病人週遭環境<strong>後</strong> <span class="en">after touching patient surroundings</span></div></div>
+    </div>
+    <p>記法：世界衛生組織用<strong>一隻手的 5 根手指頭</strong>，代表這 5 個時機。</p>
+    <div class="note"><b>資料沒有說明的地方：</b>哪些照護動作算「清潔／無菌操作」、「體液」包含哪些，本簡報使用的資料都沒有寫清楚。<br>不確定時，請直接詢問病房的醫護人員。（整理者建議）</div>
+    <div class="src">Wiki：照顧者洗手5時機｜來源 S1、S2、S3、S4</div>
+  </section>
+
+  <!-- 6 民眾 5 時機 -->
+  <section class="slide">
+    <div class="kicker">何時洗 ②　日常生活與看病</div>
+    <h2>民眾洗手 5 時機</h2>
+    <div class="cards">
+      <div class="card"><b>吃東西前</b></div>
+      <div class="card"><b>接觸小孩前</b><span class="en">另一份資料寫作「跟小寶寶玩前」</span></div>
+      <div class="card"><b>上廁所後</b></div>
+      <div class="card"><b>擤鼻涕後</b></div>
+      <div class="card"><b>看病前後</b></div>
+    </div>
+    <p>陪病家屬既是<strong>照顧者</strong>，也是<strong>一般民眾</strong>，兩組時機都要記得。</p>
+    <div class="src">Wiki：民眾洗手5時機｜來源 S1、S2、S4</div>
+  </section>
+
+  <!-- 7 怎麼洗 -->
+  <section class="slide">
+    <div class="kicker">怎麼洗</div>
+    <h2>五步驟 ＋ 七字訣</h2>
+    <p><strong>五步驟</strong></p>
+    <div class="chips"><span class="chip alt">濕</span><span class="chip alt">搓</span><span class="chip alt">沖</span><span class="chip alt">捧</span><span class="chip alt">擦</span></div>
+    <p><strong>七字訣</strong>（正確洗手 7 步驟）</p>
+    <div class="chips"><span class="chip">內</span><span class="chip">外</span><span class="chip">夾</span><span class="chip">弓</span><span class="chip">大</span><span class="chip">立</span><span class="chip">完</span></div>
+    <div class="note"><b>資料沒有說明的地方：</b>每個字對應的搓洗動作、要搓多久、五步驟和七字訣怎麼搭配，以及該用肥皂還是乾洗手液，本簡報使用的資料都沒有寫。<br>不確定時，請醫護人員示範。（整理者建議）</div>
+    <div class="src">Wiki：洗手7步驟｜來源 S1、S2、S4</div>
+  </section>
+
+  <!-- 8 常見誤解 -->
+  <section class="slide">
+    <div class="kicker">常見誤解</div>
+    <h2>「我有戴手套，<br>就不用洗手了吧？」</h2>
+    <div class="myth">
+      <div class="card x"><span class="tag x">誤解</span><b>戴手套就安全了</b>手套會把細菌擋在外面，脫下來就好。</div>
+      <div class="card o"><span class="tag o">正確</span><b>戴不戴手套，都要洗手</b>無論是否戴手套，雙手一樣容易遭受污染，手套也無法提供百分之百的保護。</div>
+    </div>
+    <p style="margin-top:1em">不當使用手套既浪費資源，也不一定能降低抗藥性微生物的傳播。2025 年世界手部衛生日的主題正是：</p>
+    <p class="big">It might be gloves. It's always hand hygiene.</p>
+    <div class="src">Wiki：戴手套與手部衛生｜來源 S2</div>
+  </section>
+
+  <!-- 9 小知識 -->
+  <section class="slide">
+    <div class="kicker">小知識</div>
+    <h2>洗手 5 時機從哪裡來？</h2>
+    <div class="cards">
+      <div class="card"><b>2009 年起</b>世界衛生組織推動「拯救生命：清潔雙手」活動，並把 <strong>5 月 5 日</strong>訂為世界手部衛生日。</div>
+      <div class="card"><b>原本為醫護人員設計</b>學術文獻指出，「我的洗手 5 時機」是為醫療照護人員設計的，用來在照護過程中中斷微生物的傳播。</div>
+      <div class="card"><b>台灣的推動</b>疾管署自 2010 年起推動「建置手部衛生示範中心」計畫，並在長期照護機構推廣手部衛生。</div>
+    </div>
+    <div class="obs"><b>整理者觀察：</b>原始研究的對象是醫護人員，而台灣衛福部的新聞稿把對象寫成「工作人員及照顧者」。所以這套方法，<strong>陪病的你也適用</strong>。</div>
+    <div class="src">Wiki：手部衛生、照顧者洗手5時機｜來源 S1、S2、S4、S5</div>
+  </section>
+
+  <!-- 10 小測驗 -->
+  <section class="slide quiz">
+    <div class="kicker">小測驗</div>
+    <h2>考考你</h2>
+    <div class="q" data-answer="b">
+      <p>Q1　照顧時戴了手套，脫下手套後還需要洗手嗎？</p>
+      <div class="opts"><button data-v="a">不用，有戴手套</button><button data-v="b">需要</button></div>
+      <div class="fb" data-ok="答對了！無論是否戴手套，都要落實洗手。" data-no="再想想：手套無法提供百分之百的保護。"></div>
+    </div>
+    <div class="q" data-answer="a">
+      <p>Q2　只摸了病人的床欄和床旁桌，沒碰到病人，需要洗手嗎？</p>
+      <div class="opts"><button data-v="a">需要</button><button data-v="b">不用，沒碰到病人</button></div>
+      <div class="fb" data-ok="答對了！這是第 5 個時機：接觸病人週遭環境後。" data-no="再想想：病人週遭環境也是洗手時機。"></div>
+    </div>
+    <div class="q" data-answer="c">
+      <p>Q3　洗手七字訣的正確順序是？</p>
+      <div class="opts"><button data-v="a">內外弓夾大完立</button><button data-v="b">外內夾弓大立完</button><button data-v="c">內外夾弓大立完</button></div>
+      <div class="fb" data-ok="答對了！內、外、夾、弓、大、立、完。" data-no="再試一次。"></div>
+    </div>
+    <div class="src">Wiki：戴手套與手部衛生、照顧者洗手5時機、洗手7步驟</div>
+  </section>
+
+  <!-- 11 總結 -->
+  <section class="slide">
+    <div class="kicker">帶走這三件事</div>
+    <h2>回到病房，記得……</h2>
+    <div class="list">
+      <div class="row"><span class="num">1</span><div><strong>碰病人前、後都要洗</strong>，摸過病床、床旁桌也算。</div></div>
+      <div class="row"><span class="num">2</span><div><strong>戴手套也要洗手</strong>，手套不能取代洗手。</div></div>
+      <div class="row"><span class="num">3</span><div><strong>不確定時就問</strong>醫護人員，資料沒寫清楚的地方不要自己猜。</div></div>
+    </div>
+    <p>回到第 2 頁的情境：拉被子、扶起家人、擦口水、收餐盒，<strong>每一個動作的前後</strong>都可能是洗手時機。</p>
+    <p class="refs" style="margin-top:1em">資料來源</p>
+    <ol class="refs">
+      <li>S1 衛福部疾管署〈響應世界手部衛生日「Action saves lives」活動…〉 <a href="https://mohw.gov.tw/cp-16-86270-1.html">連結</a></li>
+      <li>S2 衛福部疾管署〈響應世界手部衛生日，公私協力推動落實「洗手5時機」…〉 <a href="https://mohw.gov.tw/cp-7178-82387-1.html">連結</a></li>
+      <li>S3 WHO, Five moments for hand hygiene（海報） <a href="https://www.who.int/publications/m/item/five-moments-for-hand-hygiene">連結</a></li>
+      <li>S4 衛福部〈5月5日世界手部衛生日，指揮中心教導正確洗手〉 <a href="https://www.mohw.gov.tw/cp-2704-53072-1.html">連結</a></li>
+      <li>S5 Sax et al. (2007). 'My five moments for hand hygiene'. J Hosp Infect <a href="https://pubmed.ncbi.nlm.nih.gov/17719685/">連結</a></li>
+    </ol>
+  </section>
+
+</div>
+
+<nav>
+  <button id="prev" aria-label="上一頁">← 上一頁</button>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <span class="count" id="count"></span>
+  <button id="next" aria-label="下一頁">下一頁 →</button>
+</nav>
+
+<script>
+(function(){
+  var slides = document.querySelectorAll('.slide');
+  var i = 0;
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  function show(n){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function(s, k){ s.classList.toggle('active', k === i); });
+    document.getElementById('bar').style.width = ((i + 1) / slides.length * 100) + '%';
+    document.getElementById('count').textContent = (i + 1) + ' / ' + slides.length;
+    prev.disabled = i === 0; next.disabled = i === slides.length - 1;
+    try { history.replaceState(null, '', '#' + (i + 1)); } catch(e) {}
+  }
+  prev.onclick = function(){ show(i - 1); };
+  next.onclick = function(){ show(i + 1); };
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); show(i + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(i - 1); }
+  });
+  var x0 = null;
+  document.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) show(dx < 0 ? i + 1 : i - 1);
+    x0 = null;
+  });
+  document.querySelectorAll('.q').forEach(function(q){
+    var fb = q.querySelector('.fb');
+    q.querySelectorAll('button').forEach(function(b){
+      b.onclick = function(){
+        var ok = b.getAttribute('data-v') === q.getAttribute('data-answer');
+        q.querySelectorAll('button').forEach(function(x){ x.classList.remove('right','wrong'); });
+        b.classList.add(ok ? 'right' : 'wrong');
+        fb.textContent = ok ? fb.getAttribute('data-ok') : fb.getAttribute('data-no');
+      };
+    });
+  });
+  var start = parseInt((location.hash || '').slice(1), 10);
+  show(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+</body>
+</html>
